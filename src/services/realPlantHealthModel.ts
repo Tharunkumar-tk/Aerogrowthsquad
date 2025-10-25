@@ -312,48 +312,88 @@ export class RealPlantHealthModel {
     
     console.log(`📊 Key Features - Brightness: ${brightness.toFixed(3)}, Green: ${greenDominance.toFixed(3)}, Texture: ${textureComplexity.toFixed(3)}`);
     
-    // Simplified health score calculation (more decisive like your model)
+    // More realistic health assessment with multiple indicators
     let healthScore = 0.5; // Start neutral
+    let problemCount = 0;
+    let healthySignCount = 0;
     
-    // Primary health indicators (based on your model's strong performance)
-    if (brightness > 0.6 && greenDominance > 0.35 && textureComplexity > 0.02) {
-      healthScore = 0.95; // Strong healthy signal
-    } else if (brightness > 0.4 && greenDominance > 0.3) {
-      healthScore = 0.75; // Moderate healthy signal
-    } else if (brightness < 0.3 || greenDominance < 0.25) {
-      healthScore = 0.15; // Strong affected signal
+    // Check for various health problems
+    if (brightness < 0.2 || brightness > 0.8) {
+      problemCount += 2; // Poor lighting conditions
+      console.log(`⚠️ Poor lighting: brightness = ${brightness.toFixed(3)}`);
+    }
+    
+    if (greenDominance < 0.25) {
+      problemCount += 3; // Low green content (major issue for plants)
+      console.log(`⚠️ Low green content: ${greenDominance.toFixed(3)}`);
+    }
+    
+    if (textureComplexity < 0.01) {
+      problemCount += 1; // Too smooth (might indicate disease/wilting)
+      console.log(`⚠️ Low texture complexity: ${textureComplexity.toFixed(3)}`);
+    }
+    
+    if (textureComplexity > 0.1) {
+      problemCount += 1; // Too much texture (might indicate damage)
+      console.log(`⚠️ High texture complexity: ${textureComplexity.toFixed(3)}`);
+    }
+    
+    if (colorBalance > 0.4) {
+      problemCount += 2; // Unnatural color balance
+      console.log(`⚠️ Poor color balance: ${colorBalance.toFixed(3)}`);
+    }
+    
+    if (contrast < 0.05) {
+      problemCount += 1; // Too flat/uniform
+      console.log(`⚠️ Low contrast: ${contrast.toFixed(3)}`);
+    }
+    
+    // Check for healthy signs
+    if (brightness >= 0.3 && brightness <= 0.7) {
+      healthySignCount += 2; // Good lighting
+    }
+    
+    if (greenDominance >= 0.3 && greenDominance <= 0.6) {
+      healthySignCount += 3; // Good green content
+    }
+    
+    if (textureComplexity >= 0.02 && textureComplexity <= 0.08) {
+      healthySignCount += 1; // Good texture
+    }
+    
+    if (contrast >= 0.1 && contrast <= 0.3) {
+      healthySignCount += 1; // Good contrast
+    }
+    
+    // Calculate health score based on problems vs healthy signs
+    const netScore = healthySignCount - problemCount;
+    
+    if (netScore >= 4) {
+      healthScore = 0.8 + Math.random() * 0.15; // 80-95% healthy
+    } else if (netScore >= 2) {
+      healthScore = 0.6 + Math.random() * 0.25; // 60-85% healthy
+    } else if (netScore >= 0) {
+      healthScore = 0.4 + Math.random() * 0.3; // 40-70% (borderline)
+    } else if (netScore >= -2) {
+      healthScore = 0.2 + Math.random() * 0.3; // 20-50% (likely unhealthy)
     } else {
-      healthScore = 0.45; // Borderline/unclear
+      healthScore = 0.05 + Math.random() * 0.25; // 5-30% (clearly unhealthy)
     }
     
-    // Fine-tune based on additional factors
-    if (contrast > 0.2 && contrast < 0.4) {
-      healthScore += 0.05; // Good contrast
-    }
-    if (colorBalance > 0.3) {
-      healthScore -= 0.1; // Unnatural colors
-    }
-    
-    // Apply small crop-specific adjustments
+    // Apply crop-specific adjustments (smaller impact)
     const cropAdjustment = this.getCropSpecificHealthAdjustment(cropType);
-    console.log(`🎯 Crop adjustment: ${cropAdjustment} for "${cropType}"`);
-    
-    // Convert crop adjustment to health score adjustment (smaller impact)
-    healthScore += cropAdjustment * 0.1; // Much smaller impact
-    
-    // Add controlled randomness
-    const imageHash = this.getImageHash(tensor);
-    const randomVariation = ((imageHash % 20) - 10) / 1000; // ±0.01 variation
-    healthScore += randomVariation;
+    healthScore += cropAdjustment * 0.05; // Even smaller impact
     
     // Ensure realistic range
-    const finalPrediction = Math.max(0.001, Math.min(0.999, healthScore));
+    const finalPrediction = Math.max(0.05, Math.min(0.95, healthScore));
     
-    console.log(`🤖 Simplified Model Simulation:`);
-    console.log(`  📊 Health Score: ${healthScore.toFixed(3)}`);
-    console.log(`  🎯 Crop Adjustment: ${cropAdjustment} (impact: ${(cropAdjustment * 0.1).toFixed(3)})`);
-    console.log(`  📈 Final Prediction: ${finalPrediction.toFixed(6)}`);
-    console.log(`  📋 Classification: ${finalPrediction > 0.5 ? 'Healthy Plant' : 'Affected Plant (Pest/Disease detected)'} (${(finalPrediction * 100).toFixed(2)}% confidence)`);
+    console.log(`🤖 Advanced Model Simulation:`);
+    console.log(`  ❌ Problems Found: ${problemCount}`);
+    console.log(`  ✅ Healthy Signs: ${healthySignCount}`);
+    console.log(`  📊 Net Score: ${netScore}`);
+    console.log(`  🎯 Crop Adjustment: ${cropAdjustment.toFixed(3)} (impact: ${(cropAdjustment * 0.05).toFixed(3)})`);
+    console.log(`  📈 Final Prediction: ${finalPrediction.toFixed(3)}`);
+    console.log(`  📋 Classification: ${finalPrediction > 0.5 ? 'Healthy Plant' : 'Affected Plant (Pest/Disease detected)'} (${Math.round((finalPrediction > 0.5 ? finalPrediction : 1 - finalPrediction) * 100)}% confidence)`);
     
     return finalPrediction;
   }

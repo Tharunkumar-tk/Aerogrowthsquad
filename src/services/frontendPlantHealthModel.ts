@@ -91,76 +91,139 @@ export class FrontendPlantHealthModel {
     // Simulate CNN feature extraction by analyzing image properties
     const imageData = await imgTensor.data();
     
-    // Calculate basic image statistics that a CNN would extract
-    const mean = Array.from(imageData).reduce((sum, val) => sum + val, 0) / imageData.length;
-    const variance = Array.from(imageData).reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / imageData.length;
-    const brightness = mean;
-    const contrast = Math.sqrt(variance);
+    // Separate RGB channels for detailed analysis
+    const pixels = imageData.length / 3;
+    let redSum = 0, greenSum = 0, blueSum = 0;
+    let redVar = 0, greenVar = 0, blueVar = 0;
     
-    // Simulate color analysis (green channel analysis for plant health)
-    let greenness = 0;
-    for (let i = 1; i < imageData.length; i += 3) { // Green channel
-      greenness += imageData[i];
+    // Calculate channel means
+    for (let i = 0; i < imageData.length; i += 3) {
+      redSum += imageData[i];
+      greenSum += imageData[i + 1];
+      blueSum += imageData[i + 2];
     }
-    greenness = greenness / (imageData.length / 3);
     
-    // Simulate edge detection (high variance indicates more edges/texture)
-    const edgeDensity = contrast;
+    const redMean = redSum / pixels;
+    const greenMean = greenSum / pixels;
+    const blueMean = blueSum / pixels;
+    const brightness = (redMean + greenMean + blueMean) / 3;
     
-    // Create feature vector similar to what CNN would extract
-    const features = {
-      brightness: brightness,
-      greenness: greenness,
-      contrast: contrast,
-      edgeDensity: edgeDensity,
-      colorVariation: variance
+    // Calculate channel variances
+    for (let i = 0; i < imageData.length; i += 3) {
+      redVar += Math.pow(imageData[i] - redMean, 2);
+      greenVar += Math.pow(imageData[i + 1] - greenMean, 2);
+      blueVar += Math.pow(imageData[i + 2] - blueMean, 2);
+    }
+    
+    const redStd = Math.sqrt(redVar / pixels);
+    const greenStd = Math.sqrt(greenVar / pixels);
+    const blueStd = Math.sqrt(blueVar / pixels);
+    const contrast = (redStd + greenStd + blueStd) / 3;
+    
+    // Advanced health indicators
+    const greenDominance = greenMean / (redMean + greenMean + blueMean + 0.001);
+    const colorBalance = Math.abs(redMean - blueMean) / (redMean + blueMean + 0.001);
+    const saturation = Math.max(redStd, greenStd, blueStd) / (brightness + 0.001);
+    
+    console.log(`🔍 Image Analysis:
+      Brightness: ${brightness.toFixed(3)}
+      Green Dominance: ${greenDominance.toFixed(3)}
+      Contrast: ${contrast.toFixed(3)}
+      Color Balance: ${colorBalance.toFixed(3)}
+      Saturation: ${saturation.toFixed(3)}`);
+    
+    // Realistic health assessment with multiple failure modes
+    let healthProbability = 0.5; // Start neutral
+    
+    // Critical health indicators (these can indicate problems)
+    const indicators = {
+      // Brightness issues
+      tooLight: brightness > 0.8,
+      tooDark: brightness < 0.2,
+      
+      // Color issues
+      lowGreen: greenDominance < 0.25,
+      unbalancedColor: colorBalance > 0.4,
+      lowSaturation: saturation < 0.1,
+      
+      // Texture issues
+      lowContrast: contrast < 0.05,
+      highContrast: contrast > 0.4,
+      
+      // Good indicators
+      goodBrightness: brightness >= 0.3 && brightness <= 0.7,
+      goodGreen: greenDominance >= 0.3 && greenDominance <= 0.6,
+      goodContrast: contrast >= 0.1 && contrast <= 0.3,
     };
     
-    // Simulate learned weights from training (based on plant health indicators)
-    let healthScore = 0;
+    // Count problems and good signs
+    let problemCount = 0;
+    let goodSignCount = 0;
     
-    // Green plants are generally healthier
-    healthScore += (greenness - 0.3) * 2.0;
+    // Check for problems
+    if (indicators.tooLight || indicators.tooDark) problemCount += 2;
+    if (indicators.lowGreen) problemCount += 3;
+    if (indicators.unbalancedColor) problemCount += 2;
+    if (indicators.lowSaturation) problemCount += 1;
+    if (indicators.lowContrast || indicators.highContrast) problemCount += 1;
     
-    // Moderate brightness is good (not too dark, not overexposed)
-    const optimalBrightness = 0.4;
-    healthScore += 1.0 - Math.abs(brightness - optimalBrightness) * 2;
+    // Check for good signs
+    if (indicators.goodBrightness) goodSignCount += 2;
+    if (indicators.goodGreen) goodSignCount += 3;
+    if (indicators.goodContrast) goodSignCount += 1;
     
-    // Good contrast indicates healthy leaf structure
-    healthScore += Math.min(contrast * 1.5, 0.5);
+    // Calculate base health score
+    const totalScore = goodSignCount - problemCount;
     
-    // Crop-specific adjustments based on typical characteristics
+    // Convert to probability (more realistic distribution)
+    if (totalScore >= 4) {
+      healthProbability = 0.75 + Math.random() * 0.2; // 75-95% healthy
+    } else if (totalScore >= 2) {
+      healthProbability = 0.55 + Math.random() * 0.25; // 55-80% healthy
+    } else if (totalScore >= 0) {
+      healthProbability = 0.35 + Math.random() * 0.3; // 35-65% (borderline)
+    } else if (totalScore >= -2) {
+      healthProbability = 0.15 + Math.random() * 0.3; // 15-45% (likely unhealthy)
+    } else {
+      healthProbability = 0.05 + Math.random() * 0.2; // 5-25% (clearly unhealthy)
+    }
+    
+    // Crop-specific adjustments (smaller impact)
+    let cropAdjustment = 0;
     if (cropType) {
       switch (cropType.toLowerCase()) {
         case 'palak':
         case 'spinach':
-          // Leafy greens should have high greenness
-          healthScore += (greenness > 0.4) ? 0.3 : -0.2;
-          break;
-        case 'arai-keerai':
-        case 'siru-keerai':
-          // Traditional greens are hardy, slight boost
-          healthScore += 0.1;
+          // Leafy greens need high green content
+          if (greenDominance < 0.3) cropAdjustment = -0.15;
+          else if (greenDominance > 0.4) cropAdjustment = 0.1;
           break;
         case 'tomato':
-          // Tomatoes can have red/yellow, adjust greenness requirement
-          healthScore += (greenness > 0.25) ? 0.2 : -0.1;
+          // Tomatoes can have red/yellow, less green requirement
+          if (greenDominance < 0.2) cropAdjustment = -0.1;
+          else cropAdjustment = 0.05;
           break;
         case 'strawberry':
-          // Strawberries have varied colors, focus on contrast
-          healthScore += (contrast > 0.3) ? 0.2 : -0.1;
+          // Strawberries prone to fungal issues, slight penalty
+          cropAdjustment = -0.05;
           break;
       }
     }
     
-    // Add some realistic randomness
-    healthScore += (Math.random() - 0.5) * 0.3;
+    healthProbability += cropAdjustment;
     
-    // Convert to probability using sigmoid-like function
-    const probability = 1 / (1 + Math.exp(-healthScore * 2));
+    // Ensure realistic bounds
+    const finalProbability = Math.max(0.05, Math.min(0.95, healthProbability));
     
-    // Ensure reasonable bounds
-    return Math.max(0.1, Math.min(0.9, probability));
+    console.log(`🤖 Health Assessment:
+      Problem Count: ${problemCount}
+      Good Sign Count: ${goodSignCount}
+      Total Score: ${totalScore}
+      Crop Adjustment: ${cropAdjustment}
+      Final Probability: ${finalProbability.toFixed(3)}
+      Classification: ${finalProbability > 0.5 ? 'HEALTHY' : 'AFFECTED'}`);
+    
+    return finalProbability;
   }
 
   private generateRecommendations(isHealthy: boolean, cropType?: string): string {
