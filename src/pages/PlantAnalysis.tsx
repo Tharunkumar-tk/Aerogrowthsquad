@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { isMobile, takePicture, selectFromGallery } from "@/utils/mobile";
 import { shouldUseMobileLayout } from "@/utils/mobileDetection";
 import { MOBILE_CONFIG } from "@/config/mobile";
-import { realPlantHealthModel } from "@/services/realPlantHealthModel";
+import { frontendPlantHealthModel } from "@/services/frontendPlantHealthModel";
 import { cropData } from "@/lib/mockData";
 
 export interface AnalysisResult {
@@ -97,8 +97,8 @@ const PlantAnalysis = () => {
         });
       }, 300);
 
-      // Use real plant health model with crop type
-      const result = await realPlantHealthModel.classifyImage(preview, cropName);
+      // Use frontend plant health model with crop type
+      const result = await frontendPlantHealthModel.classifyImage(preview, cropName);
       
       clearInterval(progressInterval);
       setProgress(100);

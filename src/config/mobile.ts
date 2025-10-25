@@ -4,10 +4,8 @@ export const getMobileConfig = () => {
   const isNativeMobile = isMobile();
   
   return {
-    // API Configuration
-    apiBaseUrl: isNativeMobile 
-      ? 'https://your-backend-url.com' // Replace with your actual backend URL
-      : 'http://localhost:5000',
+    // API Configuration - Frontend only (no backend needed)
+    apiBaseUrl: '', // No backend API needed - using frontend ML model
     
     // ML Model Configuration
     mlConfig: {
