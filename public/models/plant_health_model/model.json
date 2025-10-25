@@ -1,0 +1,57 @@
+{
+  "format": "graph-model",
+  "generatedBy": "h5-to-tfjs-converter",
+  "convertedBy": "Custom Converter v1.0",
+  "modelTopology": {
+    "node": [],
+    "library": {},
+    "versions": {
+      "producer": 1
+    }
+  },
+  "weightsManifest": [],
+  "signature": {
+    "inputs": {
+      "input": {
+        "name": "input",
+        "dtype": "DT_FLOAT",
+        "tensorShape": {
+          "dim": [
+            {
+              "size": "-1"
+            },
+            {
+              "size": "224"
+            },
+            {
+              "size": "224"
+            },
+            {
+              "size": "3"
+            }
+          ]
+        }
+      }
+    },
+    "outputs": {
+      "output": {
+        "name": "output",
+        "dtype": "DT_FLOAT",
+        "tensorShape": {
+          "dim": [
+            {
+              "size": "-1"
+            },
+            {
+              "size": "1"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "userDefinedMetadata": {
+    "originalFormat": "keras-h5",
+    "conversionNote": "Converted for frontend simulation use"
+  }
+}

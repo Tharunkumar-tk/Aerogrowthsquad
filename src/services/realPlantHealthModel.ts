@@ -8,8 +8,8 @@ import * as tf from '@tensorflow/tfjs';
 export class RealPlantHealthModel {
   private model: tf.LayersModel | null = null;
   private isLoaded = false;
-  private modelPath = '/models/new_plant_health_model/model.json';
-  private fallbackModelPath = '/models/plant_health_classifier/model.json';
+  private modelPath = '/models/plant_health_model/model.json';
+  private fallbackModelPath = '/models/new_plant_health_model/model.json';
   private modelInfo: any = null;
 
   async loadModel(): Promise<void> {
@@ -18,29 +18,38 @@ export class RealPlantHealthModel {
       
       // Load detailed model analysis first
       try {
-        const analysisResponse = await fetch('/models/new_plant_health_model/model_analysis.json');
+        const analysisResponse = await fetch('/models/plant_health_model/model_info.json');
         if (analysisResponse.ok) {
           this.modelInfo = await analysisResponse.json();
-          console.log('📋 New model analysis loaded:', this.modelInfo.model_name);
-          console.log(`🏗️ Architecture: ${this.modelInfo.architecture.total_layers} layers, ${this.modelInfo.architecture.total_parameters.toLocaleString()} parameters`);
-          console.log(`📊 Model size: ${this.modelInfo.file_size_mb} MB`);
+          console.log('📋 H5 model info loaded:', this.modelInfo.modelName);
+          console.log(`🏗️ Architecture: ${this.modelInfo.architecture.layers} layers, ${this.modelInfo.architecture.total_params.toLocaleString()} parameters`);
+          console.log(`📊 Model size: ~${(this.modelInfo.architecture.total_params * 4 / (1024*1024)).toFixed(1)} MB`);
         }
       } catch (infoError) {
-        console.warn('⚠️ Could not load model analysis, using defaults');
+        console.warn('⚠️ Could not load H5 model info, trying fallback');
+        try {
+          const fallbackResponse = await fetch('/models/new_plant_health_model/model_analysis.json');
+          if (fallbackResponse.ok) {
+            this.modelInfo = await fallbackResponse.json();
+            console.log('📋 Fallback model analysis loaded:', this.modelInfo.model_name);
+          }
+        } catch (fallbackError) {
+          console.warn('⚠️ Could not load any model analysis, using defaults');
+        }
       }
       
-      // Try to load the new converted model first
+      // Try to load the H5 converted model first
       try {
-        console.log(`📁 Attempting to load new model from: ${this.modelPath}`);
+        console.log(`📁 Attempting to load H5 converted model from: ${this.modelPath}`);
         this.model = await tf.loadLayersModel(this.modelPath);
         this.isLoaded = true;
         
-        console.log('✅ New plant health classifier loaded successfully!');
+        console.log('✅ H5 plant health classifier loaded successfully!');
         console.log(`📊 Model input shape: ${this.model.inputs[0].shape}`);
         console.log(`📊 Model output shape: ${this.model.outputs[0].shape}`);
         return;
-      } catch (newModelError) {
-        console.warn('⚠️ New model not available, trying fallback model...');
+      } catch (h5ModelError) {
+        console.warn('⚠️ H5 converted model not available, trying fallback model...');
         
         // Try fallback model
         try {
