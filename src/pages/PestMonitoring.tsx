@@ -121,7 +121,7 @@ const PestMonitoring = () => {
 
               {/* Crop Grid - Responsive */}
               <div className={`grid ${useMobileLayout ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'} gap-4`}>
-                {cropData.slice(0, useMobileLayout ? 4 : 8).map((crop) => (
+                {cropData.map((crop) => (
                   <CropCard
                     key={crop.id}
                     {...crop}

@@ -105,6 +105,30 @@ export const mockAlerts: Alert[] = [
 
 export const cropData = [
   {
+    id: "palak",
+    name: "Palak (Spinach)",
+    image: palakImg,
+    description: "Nutrient-rich leafy green; optimal for tower farms",
+    commonPests: ["aphids", "leaf miners", "downy mildew", "flea beetles"],
+    inspectionAngle: "Leaf surface and stem base",
+  },
+  {
+    id: "arai-keerai",
+    name: "Arai Keerai",
+    image: araiKeeraiImg,
+    description: "Traditional Tamil leafy green; fast-growing",
+    commonPests: ["aphids", "caterpillars", "leaf spot", "whiteflies"],
+    inspectionAngle: "Leaf underside and growing tips",
+  },
+  {
+    id: "siru-keerai",
+    name: "Siru Keerai",
+    image: siruKeeraiImg,
+    description: "Small leafy green; excellent for vertical farming",
+    commonPests: ["aphids", "thrips", "leaf miners", "spider mites"],
+    inspectionAngle: "Leaf clusters and stem junction",
+  },
+  {
     id: "tomato",
     name: "Tomato",
     image: tomatoImg,
@@ -135,29 +159,5 @@ export const cropData = [
     description: "Heavy feeder; check for earworms",
     commonPests: ["corn earworm", "aphids", "armyworm"],
     inspectionAngle: "Leaf whorl and ear silk",
-  },
-  {
-    id: "palak",
-    name: "Palak (Spinach)",
-    image: palakImg,
-    description: "Nutrient-rich leafy green; optimal for tower farms",
-    commonPests: ["aphids", "leaf miners", "downy mildew", "flea beetles"],
-    inspectionAngle: "Leaf surface and stem base",
-  },
-  {
-    id: "arai-keerai",
-    name: "Arai Keerai",
-    image: araiKeeraiImg,
-    description: "Traditional Tamil leafy green; fast-growing",
-    commonPests: ["aphids", "caterpillars", "leaf spot", "whiteflies"],
-    inspectionAngle: "Leaf underside and growing tips",
-  },
-  {
-    id: "siru-keerai",
-    name: "Siru Keerai",
-    image: siruKeeraiImg,
-    description: "Small leafy green; excellent for vertical farming",
-    commonPests: ["aphids", "thrips", "leaf miners", "spider mites"],
-    inspectionAngle: "Leaf clusters and stem junction",
   },
 ];
