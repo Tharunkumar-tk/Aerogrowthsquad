@@ -1,0 +1,31 @@
+{
+  "functions": {
+    "api/predict.py": {
+      "runtime": "python3.9",
+      "maxDuration": 30
+    },
+    "api/health.py": {
+      "runtime": "python3.9",
+      "maxDuration": 10
+    }
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

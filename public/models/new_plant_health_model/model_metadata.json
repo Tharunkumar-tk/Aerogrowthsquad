@@ -1,0 +1,44 @@
+{
+  "model_name": "new_plant_health_classifier",
+  "version": "2.0",
+  "description": "Updated plant health classifier model",
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "preprocessing": {
+    "resize_target": [
+      224,
+      224
+    ],
+    "normalization": "divide_by_255",
+    "color_mode": "rgb",
+    "batch_dimension": true
+  },
+  "output": {
+    "type": "binary_classification",
+    "shape": [
+      1
+    ],
+    "threshold": 0.5,
+    "classes": {
+      "healthy": "prediction > 0.5",
+      "affected": "prediction <= 0.5"
+    }
+  },
+  "supported_crops": [
+    "tomato",
+    "bell-pepper",
+    "strawberry",
+    "corn",
+    "palak",
+    "arai-keerai",
+    "siru-keerai"
+  ],
+  "conversion_info": {
+    "source_model": "new_plant_health_classifier.h5",
+    "quantization": "float16",
+    "format": "tfjs_graph_model"
+  }
+}

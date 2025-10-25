@@ -31,7 +31,7 @@ class SensorApiService {
     allData?: { data: any[]; timestamp: number };
   } = {};
   
-  private readonly CACHE_DURATION = 2000; // 2 seconds cache
+  private readonly CACHE_DURATION = 5000; // 5 seconds cache
 
   async getAllData(): Promise<any[]> {
     try {

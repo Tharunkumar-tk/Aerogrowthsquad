@@ -1,0 +1,51 @@
+{
+  "model_name": "new_plant_health_classifier",
+  "version": "2.0",
+  "file_size_mb": 127.87,
+  "architecture": {
+    "input_shape": [
+      224,
+      224,
+      3
+    ],
+    "output_shape": [
+      1
+    ],
+    "total_parameters": 11169089,
+    "total_layers": 10
+  },
+  "preprocessing": {
+    "target_size": [
+      224,
+      224
+    ],
+    "normalization": "divide_by_255",
+    "color_mode": "rgb",
+    "batch_dimension": true
+  },
+  "prediction": {
+    "type": "binary_classification",
+    "threshold": 0.5,
+    "output_range": [
+      0.0,
+      1.0
+    ],
+    "healthy_condition": "prediction > 0.5",
+    "affected_condition": "prediction <= 0.5"
+  },
+  "supported_crops": [
+    "tomato",
+    "bell-pepper",
+    "strawberry",
+    "corn",
+    "palak",
+    "arai-keerai",
+    "siru-keerai"
+  ],
+  "usage_example": {
+    "load": "model = tf.keras.models.load_model('new_plant_health_classifier.h5')",
+    "preprocess": "img = image.load_img(path, target_size=(224, 224)); img_array = image.img_to_array(img) / 255.0; img_array = np.expand_dims(img_array, axis=0)",
+    "predict": "prediction = model.predict(img_array)[0][0]",
+    "classify": "result = 'Healthy Plant' if prediction > 0.5 else 'Affected Plant (Pest/Disease detected)'"
+  }
+}

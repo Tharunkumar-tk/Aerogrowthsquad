@@ -1,0 +1,28 @@
+{
+  "model_name": "new_plant_health_classifier",
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "preprocessing": {
+    "resize": [
+      224,
+      224
+    ],
+    "normalization": "divide_by_255",
+    "batch_dimension": true
+  },
+  "output": {
+    "type": "binary_classification",
+    "threshold": 0.5,
+    "classes": {
+      "0": "Affected Plant (Pest/Disease detected)",
+      "1": "Healthy Plant"
+    }
+  },
+  "prediction_logic": {
+    "healthy_condition": "prediction > 0.5",
+    "affected_condition": "prediction <= 0.5"
+  }
+}

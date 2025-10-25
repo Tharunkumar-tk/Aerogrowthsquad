@@ -3,6 +3,9 @@ import tomatoImg from "@/assets/crops/tomato.jpg";
 import bellPepperImg from "@/assets/crops/bell-pepper.jpg";
 import strawberryImg from "@/assets/crops/strawberry.jpg";
 import cornImg from "@/assets/crops/corn.jpg";
+import palakImg from "@/assets/crops/palak.webp";
+import araiKeeraiImg from "@/assets/crops/aarai-green.jpg";
+import siruKeeraiImg from "@/assets/crops/siru-keerai.webp";
 
 export interface SensorReading {
   ts: string;
@@ -132,5 +135,29 @@ export const cropData = [
     description: "Heavy feeder; check for earworms",
     commonPests: ["corn earworm", "aphids", "armyworm"],
     inspectionAngle: "Leaf whorl and ear silk",
+  },
+  {
+    id: "palak",
+    name: "Palak (Spinach)",
+    image: palakImg,
+    description: "Nutrient-rich leafy green; optimal for tower farms",
+    commonPests: ["aphids", "leaf miners", "downy mildew", "flea beetles"],
+    inspectionAngle: "Leaf surface and stem base",
+  },
+  {
+    id: "arai-keerai",
+    name: "Arai Keerai",
+    image: araiKeeraiImg,
+    description: "Traditional Tamil leafy green; fast-growing",
+    commonPests: ["aphids", "caterpillars", "leaf spot", "whiteflies"],
+    inspectionAngle: "Leaf underside and growing tips",
+  },
+  {
+    id: "siru-keerai",
+    name: "Siru Keerai",
+    image: siruKeeraiImg,
+    description: "Small leafy green; excellent for vertical farming",
+    commonPests: ["aphids", "thrips", "leaf miners", "spider mites"],
+    inspectionAngle: "Leaf clusters and stem junction",
   },
 ];

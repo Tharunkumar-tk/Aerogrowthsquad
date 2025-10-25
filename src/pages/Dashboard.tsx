@@ -139,11 +139,11 @@ const Dashboard = () => {
     // Set up intervals for real-time updates
     const latestDataInterval = setInterval(() => {
       fetchLatestData().catch(console.error);
-    }, 2000); // Every 2 seconds
+    }, 10000); // Every 10 seconds
 
     const chartDataInterval = setInterval(() => {
       fetchChartData().catch(console.error);
-    }, 2000); // Every 2 seconds
+    }, 10000); // Every 10 seconds
 
     return () => {
       clearInterval(latestDataInterval);

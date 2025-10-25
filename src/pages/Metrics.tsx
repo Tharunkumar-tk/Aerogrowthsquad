@@ -97,11 +97,11 @@ const Metrics = () => {
     // Set up intervals for real-time updates
     const latestDataInterval = setInterval(() => {
       fetchLatestData().catch(console.error);
-    }, 2000); // Every 2 seconds
-    
+    }, 10000); // Every 10 seconds
+
     const chartDataInterval = setInterval(() => {
       fetchChartData().catch(console.error);
-    }, 2000); // Every 2 seconds
+    }, 10000); // Every 10 seconds
 
     return () => {
       clearInterval(latestDataInterval);
@@ -110,51 +110,51 @@ const Metrics = () => {
   }, []);
 
   const getMetricsConfig = () => ({
-    pH: { 
-      data: chartData?.pH && chartData.pH.length > 0 ? chartData.pH : phHistory, 
-      label: "pH Level", 
-      unit: "pH", 
-      optimal: 6.5, 
+    pH: {
+      data: chartData?.pH && chartData.pH.length > 0 ? chartData.pH : phHistory,
+      label: "pH Level",
+      unit: "pH",
+      optimal: 6.5,
       icon: Activity,
       color: "hsl(var(--chart-1))",
       description: "Acidity/alkalinity level of the nutrient solution",
       isRealData: chartData?.pH && chartData.pH.length > 0
     },
-    airTemp: { 
-      data: chartData?.airTemp && chartData.airTemp.length > 0 ? chartData.airTemp : airTempHistory, 
-      label: "Air Temperature", 
-      unit: "°C", 
-      optimal: 26, 
+    airTemp: {
+      data: chartData?.airTemp && chartData.airTemp.length > 0 ? chartData.airTemp : airTempHistory,
+      label: "Air Temperature",
+      unit: "°C",
+      optimal: 26,
       icon: Thermometer,
       color: "hsl(var(--chart-2))",
       description: "Ambient air temperature in the growing environment",
       isRealData: chartData?.airTemp && chartData.airTemp.length > 0
     },
-    waterTemp: { 
-      data: chartData?.waterTemp && chartData.waterTemp.length > 0 ? chartData.waterTemp : waterTempHistory, 
-      label: "Water Temperature", 
-      unit: "°C", 
-      optimal: 21, 
+    waterTemp: {
+      data: chartData?.waterTemp && chartData.waterTemp.length > 0 ? chartData.waterTemp : waterTempHistory,
+      label: "Water Temperature",
+      unit: "°C",
+      optimal: 21,
       icon: Thermometer,
       color: "hsl(var(--chart-3))",
       description: "Temperature of the nutrient solution",
       isRealData: chartData?.waterTemp && chartData.waterTemp.length > 0
     },
-    tds: { 
-      data: chartData?.tds && chartData.tds.length > 0 ? chartData.tds : tdsHistory, 
-      label: "TDS", 
-      unit: "ppm", 
-      optimal: 400, 
+    tds: {
+      data: chartData?.tds && chartData.tds.length > 0 ? chartData.tds : tdsHistory,
+      label: "TDS",
+      unit: "ppm",
+      optimal: 400,
       icon: Gauge,
       color: "hsl(var(--chart-4))",
       description: "Total dissolved solids in the nutrient solution",
       isRealData: chartData?.tds && chartData.tds.length > 0
     },
-    humidity: { 
-      data: chartData?.humidity && chartData.humidity.length > 0 ? chartData.humidity : humidityHistory, 
-      label: "Humidity", 
-      unit: "%", 
-      optimal: 75, 
+    humidity: {
+      data: chartData?.humidity && chartData.humidity.length > 0 ? chartData.humidity : humidityHistory,
+      label: "Humidity",
+      unit: "%",
+      optimal: 75,
       icon: Droplets,
       color: "hsl(var(--chart-5))",
       description: "Relative humidity in the growing environment",
@@ -167,10 +167,10 @@ const Metrics = () => {
     const metricsConfig = getMetricsConfig();
     const config = metricsConfig[metricKey];
     const data = config.data; // Use all available data from last30
-    
+
     // Log data source for debugging
     console.log(`📊 ${metricKey}: Using ${config.isRealData ? 'REAL' : 'MOCK'} data (${data.length} points)`);
-    
+
     // Get current value from latest API data (always use latest for current value)
     const getCurrentValue = () => {
       if (latestData) {
@@ -185,7 +185,7 @@ const Metrics = () => {
       }
       return data[data.length - 1]?.value ?? 0;
     };
-    
+
     if (data.length === 0) {
       return {
         current: getCurrentValue(),
@@ -195,10 +195,10 @@ const Metrics = () => {
         chartData: [],
       };
     }
-    
+
     const values = data.map((d) => d.value);
     const safeValues = values.filter(v => v !== null && v !== undefined && !isNaN(v));
-    
+
     return {
       current: getCurrentValue(), // Latest data for current value
       min: safeValues.length > 0 ? Math.min(...safeValues) : 0, // Min from last30 data
@@ -217,36 +217,36 @@ const Metrics = () => {
   const isMobileDevice = () => {
     const userAgent = navigator.userAgent.toLowerCase();
     const mobileKeywords = ['android', 'webos', 'iphone', 'ipad', 'ipod', 'blackberry', 'iemobile', 'opera mini'];
-    return mobileKeywords.some(keyword => userAgent.includes(keyword)) || 
-           ('ontouchstart' in window) || 
-           (navigator.maxTouchPoints > 0);
+    return mobileKeywords.some(keyword => userAgent.includes(keyword)) ||
+      ('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0);
   };
 
   const handleExport = async (metricKey: MetricType) => {
     console.log(`Starting CSV export for ${metricKey}`);
     setIsExporting(prev => ({ ...prev, [metricKey]: true }));
-    
+
     // Add a small delay to ensure UI updates properly on mobile
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     try {
       // Fetch fresh data directly from /data endpoint for export
       let dataToExport: { ts: string; value: number }[] = [];
       let isRealData = false;
-      
+
       try {
         const allData = await sensorApi.getAllData();
         if (allData.length > 0) {
           // Take last 30 entries and reverse for chronological order
           const last30 = allData.slice(0, 30).reverse();
-          
+
           // Parse timestamp and extract the metric value
           dataToExport = last30.map((item: any) => {
             const parts = item.timestamp.split(' ');
             const datePart = parts[0].replace(/:/g, '-');
             const timePart = parts[1];
             const isoTimestamp = `${datePart}T${timePart}`;
-            
+
             let value = 0;
             switch (metricKey) {
               case 'pH': value = item.pH; break;
@@ -255,7 +255,7 @@ const Metrics = () => {
               case 'tds': value = item.tds; break;
               case 'humidity': value = item.humidity; break;
             }
-            
+
             return {
               ts: isoTimestamp,
               value: value
@@ -271,9 +271,9 @@ const Metrics = () => {
         dataToExport = config.data.slice(-30);
         isRealData = config.isRealData;
       }
-      
+
       console.log(`📤 Exporting ${dataToExport.length} data points for ${metricKey} (${isRealData ? 'REAL' : 'MOCK'} data)`);
-      
+
       // Get metric label and unit
       const getMetricInfo = (key: MetricType) => {
         const labels = {
@@ -285,9 +285,9 @@ const Metrics = () => {
         };
         return labels[key];
       };
-      
+
       const metricInfo = getMetricInfo(metricKey);
-      
+
       // Generate CSV content with proper formatting and BOM for Excel compatibility
       const dataSource = isRealData ? 'Real-time API Data' : 'Mock Data (API Unavailable)';
       const headers = ["Timestamp", "Time", "Metric", "Value", "Unit"];
@@ -300,11 +300,11 @@ const Metrics = () => {
         "",
         headers.join(",")
       ];
-      
+
       dataToExport.forEach((item) => {
         const fullTimestamp = new Date(item.ts).toLocaleString();
         const timeOnly = new Date(item.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
+
         const row = [
           `"${fullTimestamp}"`, // Full timestamp
           `"${timeOnly}"`, // Time in HH:MM format
@@ -314,18 +314,18 @@ const Metrics = () => {
         ];
         csvRows.push(row.join(","));
       });
-      
+
       // Add BOM for proper Excel UTF-8 handling
       const csvContent = '\uFEFF' + csvRows.join("\n");
       const filename = `AeroGrowth_${metricKey}_AllData_${new Date().toISOString().split("T")[0]}.csv`;
       const title = 'AeroGrowth Metrics Export';
       const description = `${metricKey} complete metrics dataset (${dataToExport.length} data points) - AeroGrowth Vertical Farming`;
-      
+
       console.log(`Exporting CSV: ${filename} with ${dataToExport.length} records`);
-      
+
       // Use the improved mobile CSV export function
       const result = await exportCSVMobile(csvContent, filename, title, description);
-      
+
       if (result.success) {
         console.log('CSV export successful:', result.message);
         // Use a more subtle success message for mobile
@@ -356,11 +356,11 @@ const Metrics = () => {
   // Wrapper function to handle CSV export with navigation bypass
   const handleCSVExportClick = (metricKey: MetricType) => {
     console.log(`Direct CSV export clicked for ${metricKey}`);
-    
+
     // Temporarily disable navigation prevention for this action
     const body = document.body;
     body.classList.add('csv-export-active');
-    
+
     // Execute the export
     handleExport(metricKey).finally(() => {
       // Re-enable navigation prevention after a delay
@@ -457,7 +457,7 @@ const Metrics = () => {
                 Overall statistics from historical data
                 {chartData && (
                   <span className="block mt-1">
-                    Data Sources: {Object.entries(getMetricsConfig()).map(([key, config]) => 
+                    Data Sources: {Object.entries(getMetricsConfig()).map(([key, config]) =>
                       `${config.label}: ${config.isRealData ? '🟢 Live' : '🟡 Mock'}`
                     ).join(' • ')}
                   </span>
@@ -479,29 +479,29 @@ const Metrics = () => {
                   </div>
                   <div className="text-sm text-muted-foreground">Total Data Points</div>
                 </div>
-                
+
                 {/* Time Range */}
                 <div className="text-center">
                   <div className="text-lg font-bold text-primary">
                     {chartData.pH && chartData.pH.length > 0 ? (
                       <>
-                        {Math.round((new Date(chartData.pH[chartData.pH.length - 1].ts).getTime() - 
-                                   new Date(chartData.pH[0].ts).getTime()) / (1000 * 60 * 60))}h
+                        {Math.round((new Date(chartData.pH[chartData.pH.length - 1].ts).getTime() -
+                          new Date(chartData.pH[0].ts).getTime()) / (1000 * 60 * 60))}h
                       </>
                     ) : '0h'}
                   </div>
                   <div className="text-sm text-muted-foreground">Data Time Span</div>
                 </div>
-                
+
                 {/* System Health Score */}
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600">
                     {latestData ? (
                       Math.round(
                         ((latestData.pH >= 6.0 && latestData.pH <= 6.8 ? 25 : 0) +
-                         (latestData.airTemp >= 23 && latestData.airTemp <= 29 ? 25 : 0) +
-                         (latestData.waterTemp >= 19 && latestData.waterTemp <= 23 ? 25 : 0) +
-                         (latestData.tds >= 350 && latestData.tds <= 450 ? 25 : 0))
+                          (latestData.airTemp >= 23 && latestData.airTemp <= 29 ? 25 : 0) +
+                          (latestData.waterTemp >= 19 && latestData.waterTemp <= 23 ? 25 : 0) +
+                          (latestData.tds >= 350 && latestData.tds <= 450 ? 25 : 0))
                       )
                     ) : 0}%
                   </div>
@@ -516,7 +516,7 @@ const Metrics = () => {
         {Object.entries(getMetricsConfig()).map(([metricKey, config]) => {
           const stats = getStatsForMetric(metricKey as MetricType);
           const Icon = config.icon;
-          
+
           return (
             <div key={metricKey} className="space-y-6">
               {/* Metric Header */}
@@ -524,7 +524,7 @@ const Metrics = () => {
                 <CardHeader>
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <div 
+                      <div
                         className="p-3 rounded-lg"
                         style={{ backgroundColor: `${config.color}20`, color: config.color }}
                       >
@@ -540,7 +540,7 @@ const Metrics = () => {
                         <p className="text-sm text-muted-foreground">{config.description}</p>
                       </div>
                     </div>
-                    <Button 
+                    <Button
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -610,9 +610,9 @@ const Metrics = () => {
                   <CardTitle>{config.label} Trend</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <PHChartMetrics 
-                    data={stats.chartData} 
-                    label={config.label} 
+                  <PHChartMetrics
+                    data={stats.chartData}
+                    label={config.label}
                     unit={config.unit}
                   />
                 </CardContent>

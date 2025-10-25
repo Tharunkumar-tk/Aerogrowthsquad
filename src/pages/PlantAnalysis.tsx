@@ -97,8 +97,8 @@ const PlantAnalysis = () => {
         });
       }, 300);
 
-      // Use real plant health model
-      const result = await realPlantHealthModel.classifyImage(preview);
+      // Use real plant health model with crop type
+      const result = await realPlantHealthModel.classifyImage(preview, cropName);
       
       clearInterval(progressInterval);
       setProgress(100);

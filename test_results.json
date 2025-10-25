@@ -1,0 +1,287 @@
+[
+  {
+    "filename": "arai healthy (2).jpeg",
+    "crop_type": "arai keerai",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.4537532200380153,
+      "contrast": 0.22592997943882537,
+      "green_dominance": 0.4085696434928385,
+      "color_balance": 0.19634963360344143,
+      "texture_complexity": 0.04267673437087839,
+      "r_mean": 0.500515675020008,
+      "g_mean": 0.5565779436774709,
+      "b_mean": 0.3041660414165666
+    },
+    "simulation_prediction": 0.8149671415301124,
+    "simulation_correct": true,
+    "h5_prediction": "0.9999864",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "arai healthy (3).jpeg",
+    "crop_type": "arai keerai",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.47488091590803,
+      "contrast": 0.24080492158609879,
+      "green_dominance": 0.4028057151662835,
+      "color_balance": 0.2758621417316927,
+      "texture_complexity": 0.032933184484556156,
+      "r_mean": 0.5631239214435775,
+      "g_mean": 0.5742570465686274,
+      "b_mean": 0.28726177971188477
+    },
+    "simulation_prediction": 0.8086173569882882,
+    "simulation_correct": true,
+    "h5_prediction": "0.9996121",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "arai healthy.jpeg",
+    "crop_type": "arai keerai",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.4633396327280913,
+      "contrast": 0.2408470512648814,
+      "green_dominance": 0.37874167573789536,
+      "color_balance": 0.25911559936474604,
+      "texture_complexity": 0.04202735279463055,
+      "r_mean": 0.5611488345338136,
+      "g_mean": 0.5268368284813926,
+      "b_mean": 0.30203323516906755
+    },
+    "simulation_prediction": 0.8164768853810069,
+    "simulation_correct": true,
+    "h5_prediction": "0.9994334",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "arai unhealthy (2).jpeg",
+    "crop_type": "arai keerai",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.4748814369497799,
+      "contrast": 0.2361608601626478,
+      "green_dominance": 0.3837152019755675,
+      "color_balance": 0.19516681672669062,
+      "texture_complexity": 0.04298243961261635,
+      "r_mean": 0.5363848664465786,
+      "g_mean": 0.547041394682873,
+      "b_mean": 0.34121804971988795
+    },
+    "simulation_prediction": 0.8252302985640803,
+    "simulation_correct": false,
+    "h5_prediction": "0.0010672843",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "arai unhealthy (3).jpeg",
+    "crop_type": "arai keerai",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.4753682462568361,
+      "contrast": 0.19906717864273674,
+      "green_dominance": 0.4123461099757824,
+      "color_balance": 0.21399794292717084,
+      "texture_complexity": 0.0454554542295244,
+      "r_mean": 0.5258207970688275,
+      "g_mean": 0.5884610875600241,
+      "b_mean": 0.3118228541416566
+    },
+    "simulation_prediction": 0.7576584662527667,
+    "simulation_correct": false,
+    "h5_prediction": "0.0043542543",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "arai unhealthy.jpeg",
+    "crop_type": "arai keerai",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.40614045097205553,
+      "contrast": 0.21337870269489523,
+      "green_dominance": 0.4492790543676745,
+      "color_balance": 0.2137448729491797,
+      "texture_complexity": 0.057285844083522795,
+      "r_mean": 0.4421528767757103,
+      "g_mean": 0.5478604723139255,
+      "b_mean": 0.2284080038265306
+    },
+    "simulation_prediction": 0.8076586304305082,
+    "simulation_correct": false,
+    "h5_prediction": "4.8263188e-05",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "palak healthy 2.jpeg",
+    "crop_type": "palak",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.49075023238462057,
+      "contrast": 0.22441747117425734,
+      "green_dominance": 0.38757174890043417,
+      "color_balance": 0.2178258803521408,
+      "texture_complexity": 0.053901706422479295,
+      "r_mean": 0.5595431141206482,
+      "g_mean": 0.5709903492647058,
+      "b_mean": 0.3417172337685074
+    },
+    "simulation_prediction": 0.825792128155074,
+    "simulation_correct": true,
+    "h5_prediction": "0.999927",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "palak healthy.jpeg",
+    "crop_type": "palak",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.46676944215186067,
+      "contrast": 0.2375494112576869,
+      "green_dominance": 0.40976605850780645,
+      "color_balance": 0.2600655105792316,
+      "texture_complexity": 0.0413804572651183,
+      "r_mean": 0.5430826236744697,
+      "g_mean": 0.5742085896858743,
+      "b_mean": 0.2830171130952381
+    },
+    "simulation_prediction": 0.8176743472915291,
+    "simulation_correct": true,
+    "h5_prediction": "0.9992439",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "palak unhealthy (2).jpeg",
+    "crop_type": "palak",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.4766401612728425,
+      "contrast": 0.2269652156109288,
+      "green_dominance": 0.3915549212334777,
+      "color_balance": 0.1490536058173268,
+      "texture_complexity": 0.03670574732135007,
+      "r_mean": 0.5093450661514605,
+      "g_mean": 0.5602839573329331,
+      "b_mean": 0.3602914603341337
+    },
+    "simulation_prediction": 0.8053052561406505,
+    "simulation_correct": false,
+    "h5_prediction": "2.5659183e-05",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "palak unhealthy.jpeg",
+    "crop_type": "palak",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.4534650318460718,
+      "contrast": 0.2514250895387374,
+      "green_dominance": 0.41383878600628476,
+      "color_balance": 0.3129102422218888,
+      "texture_complexity": 0.04506825899268527,
+      "r_mean": 0.5549536220738295,
+      "g_mean": 0.5633980936124451,
+      "b_mean": 0.24204337985194072
+    },
+    "simulation_prediction": 0.7154256004358597,
+    "simulation_correct": false,
+    "h5_prediction": "0.00032380738",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "siru healthy (2).jpeg",
+    "crop_type": "siru keerai",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.49611823896225155,
+      "contrast": 0.20400668520021253,
+      "green_dominance": 0.36797285512586086,
+      "color_balance": 0.19019209246198465,
+      "texture_complexity": 0.037384647431468854,
+      "r_mean": 0.5652523509403761,
+      "g_mean": 0.5480421074679872,
+      "b_mean": 0.3750602584783914
+    },
+    "simulation_prediction": 0.8053658230718754,
+    "simulation_correct": true,
+    "h5_prediction": "0.9978913",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "siru healthy.jpeg",
+    "crop_type": "siru keerai",
+    "expected_healthy": true,
+    "features": {
+      "brightness": 0.5139540191076432,
+      "contrast": 0.18266534759001976,
+      "green_dominance": 0.3868095613672514,
+      "color_balance": 0.12912391519107647,
+      "texture_complexity": 0.04135046769081324,
+      "r_mean": 0.5370960884353742,
+      "g_mean": 0.5967937956432573,
+      "b_mean": 0.4079721732442977
+    },
+    "simulation_prediction": 0.7553427024642975,
+    "simulation_correct": true,
+    "h5_prediction": "0.9942481",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "siru unhealthy (2).jpeg",
+    "crop_type": "siru keerai",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.5247236655078699,
+      "contrast": 0.22023423796362898,
+      "green_dominance": 0.3400132419946205,
+      "color_balance": 0.12845075530212102,
+      "texture_complexity": 0.04705115603790096,
+      "r_mean": 0.5835213773009205,
+      "g_mean": 0.5355789972238895,
+      "b_mean": 0.45507062199879944
+    },
+    "simulation_prediction": 0.8124196227156604,
+    "simulation_correct": false,
+    "h5_prediction": "1.794981e-13",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "siru unhealthy (3).jpeg",
+    "crop_type": "siru keerai",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.5206155378818195,
+      "contrast": 0.18371396814579333,
+      "green_dominance": 0.34765637183421777,
+      "color_balance": 0.11491409063625435,
+      "texture_complexity": 0.039126790477027884,
+      "r_mean": 0.5667135604241696,
+      "g_mean": 0.5433335834333735,
+      "b_mean": 0.4517994697879153
+    },
+    "simulation_prediction": 0.740867197553422,
+    "simulation_correct": false,
+    "h5_prediction": "2.2113059e-06",
+    "h5_correct": "True"
+  },
+  {
+    "filename": "siru unhealthy.jpeg",
+    "crop_type": "siru keerai",
+    "expected_healthy": false,
+    "features": {
+      "brightness": 0.5391837724673203,
+      "contrast": 0.2085315938357005,
+      "green_dominance": 0.3354654986296341,
+      "color_balance": 0.12703995660764317,
+      "texture_complexity": 0.036566607210896315,
+      "r_mean": 0.600811574629852,
+      "g_mean": 0.5429681247499,
+      "b_mean": 0.47377161802220885
+    },
+    "simulation_prediction": 0.7927508216748698,
+    "simulation_correct": false,
+    "h5_prediction": "6.893177e-07",
+    "h5_correct": "True"
+  }
+]
